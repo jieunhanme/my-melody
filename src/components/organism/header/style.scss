@@ -1,0 +1,24 @@
+@use "../../../styles/colors" as *;
+
+.header-wrapper {
+  width: 100%;
+  height: 4rem;
+
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  //   @include themed() {
+  //     background: t("bg");
+  //     box-shadow: 10px 10px 20px t("shadow-start"),
+  //       -10px -10px 20px t("shadow-end");
+  //   }
+
+  @include themed() {
+    color: t("text");
+  }
+
+  @include transition(color 0.6s, background-color 0.6s, box-shadow 0.6s);
+}
