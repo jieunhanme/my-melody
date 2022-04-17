@@ -18,16 +18,13 @@
   border-radius: 1rem;
 
   &.btn-flat-active {
-    font-weight: bold;
+    font-weight: 900;
   }
   &:active {
     @include themed() {
       background-color: t("bg-active");
     }
   }
-
-  //   @include transition(background 0.6s);
-
   span {
     margin-left: 0.4rem;
   }
