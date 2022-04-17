@@ -4,10 +4,10 @@ import { imgPath } from "../../../../utils";
 import "./style.scss";
 
 interface ButtonIconProps {
-  types: Array<string>;
+  type: string;
 }
 
-const ButtonIcon = ({ types }: ButtonIconProps) => {
+const ButtonIcon = ({ type }: ButtonIconProps) => {
   const { theme } = useContext(ThemeContext);
 
   const IconPicker = useCallback(
@@ -23,16 +23,9 @@ const ButtonIcon = ({ types }: ButtonIconProps) => {
   );
 
   return (
-    <>
-      {types &&
-        types.map((type, index) => {
-          return (
-            <div className="btn-wrapper" key={index}>
-              <img src={IconPicker(type)} alt={type} />
-            </div>
-          );
-        })}
-    </>
+    <div className="btn-icon-wrapper">
+      <img src={IconPicker(type)} alt={type} />
+    </div>
   );
 };
 

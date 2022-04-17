@@ -1,0 +1,5 @@
+@use "../../../../styles/colors" as *;
+
+.btn-txt-wrapper {
+  @include neumorphismButton(20%);
+}

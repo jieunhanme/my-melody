@@ -2,7 +2,7 @@ import { useCallback, useContext } from "react";
 import { ThemeContext } from "../../../contexts";
 import "./style.scss";
 
-import ButtonIcon from "../../atoms/buttons/button-icon";
+import { ButtonIcon } from "../../atoms/buttons";
 
 const ThemeSwitch = () => {
   const { theme, setTheme } = useContext(ThemeContext);
@@ -14,7 +14,7 @@ const ThemeSwitch = () => {
 
   return (
     <div className="box-switch" onClick={onClickSwitch}>
-      <ButtonIcon types={["theme"]} />
+      <ButtonIcon type={"theme"} />
     </div>
   );
 };
