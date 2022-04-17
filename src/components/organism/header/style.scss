@@ -10,15 +10,12 @@
   align-items: center;
   text-align: center;
 
-  //   @include themed() {
-  //     background: t("bg");
-  //     box-shadow: 10px 10px 20px t("shadow-start"),
-  //       -10px -10px 20px t("shadow-end");
-  //   }
-
-  @include themed() {
-    color: t("text");
+  nav {
+    display: flex;
+    flex-direction: row;
   }
 
-  @include transition(color 0.6s, background-color 0.6s, box-shadow 0.6s);
+  div {
+    margin: 0.5rem;
+  }
 }
