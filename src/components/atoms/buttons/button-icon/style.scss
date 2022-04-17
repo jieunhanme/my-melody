@@ -1,0 +1,40 @@
+@use "../../../../styles/colors" as *;
+
+.btn-wrapper {
+  display: flex;
+  align-items: center;
+  align-content: center;
+
+  padding: 10px;
+
+  border-radius: 50%;
+  cursor: pointer;
+
+  @include themed() {
+    background: t("bg");
+    box-shadow: 10px 10px 20px t("shadow-start"),
+      -10px -10px 20px t("shadow-end");
+    @include gradientAnimation(
+      50%,
+      145deg,
+      t("hover-start"),
+      t("hover-end"),
+      0.2s
+    );
+  }
+
+  &:hover {
+    border-radius: 50%;
+    @include themed() {
+      box-shadow: 10px 10px 20px t("shadow-start"),
+        -10px -10px 20px t("shadow-end");
+    }
+  }
+
+  @include transition(background-color 0.6s, box-shadow 0.6s);
+
+  // active상태라면
+  // border-radius: 50px;
+  // background: #ededed;
+  // box-shadow: inset 10px 10px 20px #b2b2b2, inset -10px -10px 20px #ffffff;
+}
