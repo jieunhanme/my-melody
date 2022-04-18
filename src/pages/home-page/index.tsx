@@ -1,58 +1,28 @@
-import axios from "axios";
 import { useQuery } from "react-query";
+import { getRecommendation } from "../../services";
 
-var client_id = "902606c57949490ca529400ea84dabc4";
-var client_secret = "66543bf6d8ac4faf869d1fc3a7f8de50";
+import { CLIENT_ID, CLIENT_SECRET } from "../../consts";
 
 const HomePage = () => {
-  const { status: authStatus, data: tokenData } = useQuery(
-    ["authorization"],
-    async () => {
-      const { data } = await axios.post(
-        "https://accounts.spotify.com/api/token",
-        "grant_type=client_credentials",
-        {
-          headers: {
-            Authorization: "Basic " + btoa(client_id + ":" + client_secret),
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
-      return data;
-    }
+  const { status, data } = useQuery(
+    ["recommend"],
+    getRecommendation({ CLIENT_ID, CLIENT_SECRET }),
+    { staleTime: 24 * 60 * 60 * 1000 }
   );
 
-  const { status: userStatus, data: UserData } = useQuery(
-    ["access"],
-    async () => {
-      const { data } = await axios.get(
-        "https://api.spotify.com/v1/users/jmperezperez",
-        {
-          headers: {
-            Authorization: "Bearer " + tokenData?.access_token,
-          },
-        }
-      );
-      return data;
-    }
-  );
+  if (status === "loading") return <div>LOADING...Song</div>;
+  if (status === "error") return <div>ERROR :( Song</div>;
 
-  if (authStatus === "loading") return <div>LOADING...AUTH</div>;
-  if (authStatus === "error") return <div>ERROR :( AUTH</div>;
-
-  if (userStatus === "loading") return <div>LOADING...User</div>;
-  if (userStatus === "error") return <div>ERROR :( User</div>;
+  const { tracks } = data;
+  console.log("🚀 ~ file: index.tsx ~ line 22 ~ HomePage ~ tracks", tracks);
 
   return (
     <div>
       <div>
-        <a href={UserData.external_urls.spotify} target="example">
-          <img src={UserData.images[0].url} alt="" />
-        </a>
+        <img src={tracks[0].album.images[1].url} alt="" />
       </div>
-      <div>Name {UserData.display_name}</div>
-      <div>ID {UserData.id}</div>
-      <div>Followers {UserData.followers.total}</div>
+      <div>{tracks[0].artists[0].name}</div>
+      <div>{tracks[0].name}</div>
     </div>
   );
 };
