@@ -104,17 +104,12 @@ $themes: (
       @include transition(opacity 0.2s);
     }
     &:hover {
+      box-shadow: 10px 10px 20px t("shadow-start"),
+        -10px -10px 20px t("shadow-end");
+      border-radius: $radius;
       &:before {
         opacity: 1;
       }
-    }
-  }
-
-  &:hover {
-    border-radius: $radius;
-    @include themed() {
-      box-shadow: 10px 10px 20px t("shadow-start"),
-        -10px -10px 20px t("shadow-end");
     }
   }
 
