@@ -1,14 +1,10 @@
 import axios from "axios";
+import { CLIENT_ID, CLIENT_SECRET, TokenProps } from "../consts";
 
-interface getTokenProps {
-  CLIENT_ID: string;
-  CLIENT_SECRET: string;
-}
-
-export const getToken = ({ CLIENT_ID, CLIENT_SECRET }: getTokenProps) => {
+export const getToken = () => {
   return async () =>
     await axios
-      .post(
+      .post<TokenProps>(
         "https://accounts.spotify.com/api/token",
         "grant_type=client_credentials",
         {
@@ -20,11 +16,10 @@ export const getToken = ({ CLIENT_ID, CLIENT_SECRET }: getTokenProps) => {
       )
       .then((res) => {
         const access_token = res.data.access_token;
-        const token_exp = res.data.expires_in;
-        const d = new Date();
-        d.setTime(d.getTime() + token_exp * 1000);
-        let expires = "expires=" + d.toUTCString();
-        document.cookie = "token=" + access_token + ";" + expires + ";path=/";
+
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${access_token}`;
 
         return res.data;
       });
