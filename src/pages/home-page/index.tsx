@@ -1,28 +1,32 @@
 import { useQuery } from "react-query";
-import { getRecommendation } from "../../services";
-
-import { CLIENT_ID, CLIENT_SECRET } from "../../consts";
+import { getRecommendation } from "../../api";
+import RecordPlayer from "../../components/organism/record-player";
 
 const HomePage = () => {
-  const { status, data } = useQuery(
+  const { isLoading, isError, data } = useQuery(
     ["recommend"],
-    getRecommendation({ CLIENT_ID, CLIENT_SECRET }),
-    { staleTime: 24 * 60 * 60 * 1000 }
+    getRecommendation(),
+    {
+      staleTime: 24 * 60 * 60 * 1000,
+    }
   );
 
-  if (status === "loading") return <div>LOADING...Song</div>;
-  if (status === "error") return <div>ERROR :( Song</div>;
-
-  const { tracks } = data;
-  console.log("🚀 ~ file: index.tsx ~ line 22 ~ HomePage ~ tracks", tracks);
+  if (isLoading) return <div>LOADING...Song</div>;
+  if (isError) return <div>ERROR :( Song</div>;
 
   return (
     <div>
-      <div>
-        <img src={tracks[0].album.images[1].url} alt="" />
-      </div>
-      <div>{tracks[0].artists[0].name}</div>
-      <div>{tracks[0].name}</div>
+      {data.seeds.map((seed, idx) => (
+        <div key={idx}> {seed.id}</div>
+      ))}
+      {data.tracks.map((track, idx) => (
+        <div key={idx}>
+          <img src={track.album.images[1].url} alt="" />
+          <div>{track.artists[0].name}</div>
+          <div>{track.album.name}</div>
+          <RecordPlayer uri={track.uri} />
+        </div>
+      ))}
     </div>
   );
 };
