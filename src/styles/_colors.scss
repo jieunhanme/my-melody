@@ -67,12 +67,12 @@ $themes: (
 }
 
 // NOTE 뉴모피즘 효과
-@mixin neumorphismButton($radius) {
+@mixin neumorphismButton($radius, $padding) {
   display: flex;
   align-items: center;
   align-content: center;
 
-  padding: 10px;
+  padding: $padding;
 
   border-radius: $radius;
   cursor: pointer;

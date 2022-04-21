@@ -12,7 +12,7 @@ const CustomNavLink = ({ to, title }: CustomNavLinkProps) => {
 
   return (
     <NavLink to={to}>
-      <ButtonFlat isActive={match ? true : false}>{title}</ButtonFlat>
+      <ButtonFlat title={title} isActive={match ? true : false} />
     </NavLink>
   );
 };

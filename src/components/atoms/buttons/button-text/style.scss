@@ -1,5 +1,7 @@
 @use "../../../../styles/colors" as *;
 
 .btn-txt-wrapper {
-  @include neumorphismButton(20%);
+  @include neumorphismButton(20px, 10px 15px);
+  letter-spacing: 2px;
+  margin-left: 2px;
 }

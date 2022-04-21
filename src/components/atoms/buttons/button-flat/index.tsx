@@ -1,14 +1,14 @@
 import "./style.scss";
 
 interface ButtonFlatProps {
-  isActive: boolean;
-  children: React.ReactChild;
+  isActive?: boolean;
+  title: string;
 }
 
-const ButtonFlat = ({ isActive, children }: ButtonFlatProps) => {
+const ButtonFlat = ({ isActive, title }: ButtonFlatProps) => {
   return (
     <div className={`btn-flat-wrapper ${isActive ? "btn-flat-active" : ""}`}>
-      <span>{children}</span>
+      <span>{title}</span>
     </div>
   );
 };
