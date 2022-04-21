@@ -1,10 +1,4 @@
-import {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useState,
-  useEffect,
-} from "react";
+import { Dispatch, SetStateAction, createContext, useState } from "react";
 
 const initalThemeState = {
   theme: "light",
@@ -18,18 +12,6 @@ const ThemeContext = createContext(initalThemeState);
 
 const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState(initalThemeState.theme);
-
-  const localStorage = window.localStorage;
-
-  useEffect(() => {
-    const savedThemelocal = localStorage.getItem("globalTheme");
-
-    if (!!savedThemelocal) setTheme(savedThemelocal as "light" | "dark");
-  }, [localStorage]);
-
-  useEffect(() => {
-    localStorage.setItem("globalTheme", theme);
-  }, [localStorage, theme]);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

@@ -1,7 +1,16 @@
 import "./style.scss";
 
-const ButtonText = ({ children }: { children: React.ReactNode }) => {
-  return <div className="btn-txt-wrapper">{children}</div>;
+interface ButtonTextProp {
+  onClick?: (e: React.MouseEvent) => void;
+  title: string;
+}
+
+const ButtonText = ({ onClick, title }: ButtonTextProp) => {
+  return (
+    <div className="btn-txt-wrapper" onClick={onClick}>
+      {title}
+    </div>
+  );
 };
 
 export default ButtonText;
