@@ -5,14 +5,16 @@ import Layout from "./layout";
 
 const queryClient = new QueryClient();
 
-function App() {
+const code = new URLSearchParams(window.location.search).get("code");
+
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <Layout />
+        <Layout code={code} />
       </Router>
     </QueryClientProvider>
   );
-}
+};
 
 export default App;
