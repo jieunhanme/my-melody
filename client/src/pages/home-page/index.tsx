@@ -1,22 +1,23 @@
-import { useQuery } from "react-query";
-import { getRecommendation } from "../../api";
+// import { useQuery } from "react-query";
+// import { getRecommendation } from "../../api";
 import RecordPlayer from "../../components/organism/record-player";
 
 const HomePage = () => {
-  const { isLoading, isError, data } = useQuery(
-    ["recommend"],
-    getRecommendation(),
-    {
-      staleTime: 24 * 60 * 60 * 1000,
-    }
-  );
+  // const { isLoading, isError, data } = useQuery(
+  //   ["recommend"],
+  //   getRecommendation(),
+  //   {
+  //     staleTime: 24 * 60 * 60 * 1000,
+  //   }
+  // );
 
-  if (isLoading) return <div>LOADING...Song</div>;
-  if (isError) return <div>ERROR :( Song</div>;
+  // if (isLoading) return <div>LOADING...Song</div>;
+  // if (isError) return <div>ERROR :( Song</div>;
 
   return (
     <div>
-      {data.seeds.map((seed, idx) => (
+      HOME PAGE
+      {/* {data.seeds.map((seed, idx) => (
         <div key={idx}> {seed.id}</div>
       ))}
       {data.tracks.map((track, idx) => (
@@ -26,7 +27,7 @@ const HomePage = () => {
           <div>{track.album.name}</div>
           <RecordPlayer uri={track.uri} />
         </div>
-      ))}
+      ))} */}
     </div>
   );
 };

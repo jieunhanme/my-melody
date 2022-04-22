@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { useQuery } from "react-query";
 
 import { ThemeProvider } from "../contexts";
-import { getToken } from "../api";
+// import { getToken } from "../api";
 
 import ThemeSwitch from "../components/molecules/theme-switch";
 import Header from "../components/organism/header";
@@ -13,18 +13,22 @@ import ConfigPage from "../pages/config-page";
 
 import "./style.scss";
 
-const Layout = () => {
-  // NOTE get token data
-  const { status } = useQuery(["auth"], getToken(), { staleTime: 3600000 });
+interface LayoutProps {
+  code: string | null;
+}
 
-  // TODO 토큰을 못가져올 경우
-  if (status === "loading") return <div>LOADING...AUTH</div>;
-  if (status === "error") return <div>ERROR :( AUTH</div>;
+const Layout = ({ code }: LayoutProps) => {
+  // NOTE get token data
+  // const { status } = useQuery(["auth"], getToken(), { staleTime: 3600000 });
+
+  // // TODO 토큰을 못가져올 경우
+  // if (status === "loading") return <div>LOADING...AUTH</div>;
+  // if (status === "error") return <div>ERROR :( AUTH</div>;
 
   return (
     <ThemeProvider>
       <ThemeSwitch />
-      <Header />
+      <Header code={code} />
       <div className="myClass">
         <Routes>
           <Route path="/" element={<HomePage />} />
