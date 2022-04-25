@@ -1,0 +1,11 @@
+.music-page-wrapper {
+  width: 80%;
+  padding-top: 8rem;
+  height: 100vh;
+}
+.playlist-titles {
+  display: flex;
+  & > div {
+    margin-right: 1rem;
+  }
+}

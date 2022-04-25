@@ -38,10 +38,63 @@ app.post("/api/login", (req, res) => {
     },
   })
     .then((response) => {
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.access_token}`;
+
       res.send(JSON.stringify(response.data));
+      return;
     })
     .catch((error) => {
       res.send(error);
+      res.sendStatus(400);
+    });
+});
+
+app.post("/api/refresh", (req, res) => {
+  const refreshToken = req.body.refreshToken;
+
+  axios({
+    method: "post",
+    url: "https://accounts.spotify.com/api/token",
+    data: qs.stringify({
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
+    }),
+    headers: {
+      "content-type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${new Buffer.from(
+        `${client_id}:${client_secret}`
+      ).toString("base64")}`,
+    },
+  })
+    .then((response) => {
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.access_token}`;
+      res.send(JSON.stringify(response.data));
+      return;
+    })
+    .catch((error) => {
+      res.send(error);
+      res.sendStatus(400);
+    });
+});
+
+app.get("/api/playlists", (req, res) => {
+  axios({
+    method: "get",
+    url: "https://api.spotify.com/v1/me/playlists",
+    data: qs.stringify({ scope: "playlist-read-private" }),
+  })
+    .then((response) => {
+      res.send(JSON.stringify(response.data));
+      return;
+    })
+    .catch((error) => {
+      res.send(error);
+      res.sendStatus(400);
+      return;
     });
 });
 

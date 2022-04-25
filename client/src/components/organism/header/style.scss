@@ -2,7 +2,8 @@
 
 .header-wrapper {
   width: 100%;
-  height: 4rem;
+  height: 5rem;
+  padding-top: 1rem;
 
   position: fixed;
   display: flex;
@@ -14,14 +15,10 @@
     display: flex;
     flex-direction: row;
   }
-
-  div {
-    margin: 0.5rem;
-  }
 }
 
 .btn-login {
   position: fixed;
-  top: 0.1rem;
-  right: 0.9rem;
+  top: 2rem;
+  right: 2rem;
 }

@@ -1,8 +1,8 @@
+import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 import { Routes, Route } from "react-router-dom";
-import { useQuery } from "react-query";
 
 import { ThemeProvider } from "../contexts";
-// import { getToken } from "../api";
 
 import ThemeSwitch from "../components/molecules/theme-switch";
 import Header from "../components/organism/header";
@@ -13,22 +13,98 @@ import ConfigPage from "../pages/config-page";
 
 import "./style.scss";
 
-interface LayoutProps {
-  code: string | null;
-}
+const code = new URLSearchParams(window.location.search).get("code");
 
-const Layout = ({ code }: LayoutProps) => {
-  // NOTE get token data
-  // const { status } = useQuery(["auth"], getToken(), { staleTime: 3600000 });
+const Layout = () => {
+  const [accessToken, setAccessToken] = useState<string | null>();
+  const [refreshToken, setRefreshToken] = useState<string | null>();
+  const [expiresIn, setExpiresIn] = useState<number | null>();
 
-  // // TODO 토큰을 못가져올 경우
-  // if (status === "loading") return <div>LOADING...AUTH</div>;
-  // if (status === "error") return <div>ERROR :( AUTH</div>;
+  useEffect(() => {
+    if (!code) return;
+    axios
+      .post(
+        "https://accounts.spotify.com/api/token",
+        `grant_type=authorization_code&code=${code}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}`,
+        {
+          headers: {
+            Authorization:
+              "Basic " +
+              btoa(
+                process.env.REACT_APP_CLIENT_ID +
+                  ":" +
+                  process.env.REACT_APP_CLIENT_SECRET
+              ),
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      )
+      .then(({ data }) => {
+        setAccessToken(data.access_token);
+        setRefreshToken(data.refresh_token);
+        setExpiresIn(data.expires_in);
+
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${data.access_token}`;
+
+        window.history.pushState({}, "", "/");
+      })
+      .catch(() => (window.location.href = "/"));
+  }, []);
+
+  useEffect(() => {
+    if (!refreshToken || !expiresIn) return;
+    // NOTE 토큰 만료 1분전에 refresh token 진행
+    const timeout = setTimeout(() => {
+      axios
+        .post(
+          "https://accounts.spotify.com/api/token",
+          `grant_type=refresh_token&refresh_token=${refreshToken}`,
+          {
+            headers: {
+              Authorization:
+                "Basic " +
+                btoa(
+                  process.env.REACT_APP_CLIENT_ID +
+                    ":" +
+                    process.env.REACT_APP_CLIENT_SECRET
+                ),
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }
+        )
+        .then(({ data }) => {
+          setAccessToken(data.access_token);
+          setExpiresIn(data.expires_in);
+
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${data.access_token}`;
+
+          window.history.pushState({}, "", "/");
+        })
+        .catch(() => (window.location.href = "/"));
+    }, (expiresIn - 60) * 1000);
+
+    return () => clearTimeout(timeout);
+  }, [expiresIn, refreshToken]);
+
+  const onClickLogout = useCallback(() => {
+    setAccessToken(null);
+    setRefreshToken(null);
+    setExpiresIn(null);
+    // NOTE 토큰 값 제거
+    delete axios.defaults.headers.common["Authorization"];
+  }, []);
 
   return (
     <ThemeProvider>
       <ThemeSwitch />
-      <Header code={code} />
+      <Header
+        isLogin={accessToken ? true : false}
+        onClickLogout={onClickLogout}
+      />
       <div className="myClass">
         <Routes>
           <Route path="/" element={<HomePage />} />
