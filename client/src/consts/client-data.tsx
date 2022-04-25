@@ -1,4 +1,0 @@
-const CLIENT_ID = "5d30492dd81d4bdab8c4d17169647e4f";
-const CLIENT_SECRET = "90d63eb69f4640e4b1bf9237679ac75d";
-
-export { CLIENT_ID, CLIENT_SECRET };
