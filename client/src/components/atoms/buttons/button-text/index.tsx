@@ -2,11 +2,12 @@ import { useCallback } from "react";
 import "./style.scss";
 
 interface ButtonTextProp {
-  onClick?: (value: any) => void;
   title: string;
+  isActive?: boolean;
+  onClick?: (value: any) => void;
 }
 
-const ButtonText = ({ onClick, title }: ButtonTextProp) => {
+const ButtonText = ({ onClick, isActive = false, title }: ButtonTextProp) => {
   const _onClick = useCallback(
     (value: any) => {
       if (!onClick) return;
@@ -16,7 +17,10 @@ const ButtonText = ({ onClick, title }: ButtonTextProp) => {
   );
 
   return (
-    <div className="btn-txt-wrapper" onClick={_onClick}>
+    <div
+      className={isActive ? "btn-txt-wrapper active" : "btn-txt-wrapper"}
+      onClick={_onClick}
+    >
       {title}
     </div>
   );

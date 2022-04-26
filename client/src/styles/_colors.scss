@@ -2,6 +2,8 @@ $text--light: black;
 $text--dark: white;
 $bg--light: #ededed;
 $bg--dark: #363636;
+$sub--text--light: rgb(124, 124, 124);
+$sub--text--dark: rgb(141, 141, 141);
 
 // SECTION Neumorphism Button Color
 $btn--light--shadow--start: #d8d8d8;
@@ -19,6 +21,7 @@ $themes: (
   light: (
     bg: $bg--light,
     text: $text--light,
+    sub-text: $sub--text--light,
     shadow-start: $btn--light--shadow--start,
     shadow-end: $btn--light--shadow--end,
     hover-start: $btn--light--hover--start,
@@ -27,6 +30,7 @@ $themes: (
   dark: (
     bg: $bg--dark,
     text: $text--dark,
+    sub-text: $sub--text--dark,
     shadow-start: $btn--dark--shadow--start,
     shadow-end: $btn--dark--shadow--end,
     hover-start: $btn--dark--hover--start,
@@ -110,6 +114,11 @@ $themes: (
       &:before {
         opacity: 1;
       }
+    }
+    &.active {
+      box-shadow: inset 10px 10px 20px t("shadow-start"),
+        inset -10px -10px 20px t("shadow-end");
+      border-radius: $radius;
     }
   }
 

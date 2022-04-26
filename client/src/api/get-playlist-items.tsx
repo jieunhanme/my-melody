@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PlaylistItemProps } from "../consts/interfaces/playlist-item";
+import { PlaylistItemProps } from "../consts/interfaces";
 
 interface getPlaylistItemsProps {
   playlistId: string;
