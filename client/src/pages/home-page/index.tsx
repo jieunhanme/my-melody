@@ -1,6 +1,5 @@
 // import { useQuery } from "react-query";
 // import { getRecommendation } from "../../api";
-import RecordPlayer from "../../components/organism/record-player";
 
 const HomePage = () => {
   // const { isLoading, isError, data } = useQuery(

@@ -2,6 +2,7 @@
 
 .header-wrapper {
   width: 100%;
+  min-width: 800px;
   height: 5rem;
   padding-top: 1rem;
 
@@ -18,7 +19,10 @@
 }
 
 .btn-login {
-  position: fixed;
+  position: absolute;
   top: 2rem;
   right: 2rem;
+  div {
+    letter-spacing: 2px;
+  }
 }

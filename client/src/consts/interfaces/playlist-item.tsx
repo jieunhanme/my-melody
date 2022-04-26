@@ -1,6 +1,6 @@
 import { TrackProps } from "./common";
 
-interface ItemProps {
+export interface ItemProps {
   added_at: string;
   added_by: {
     external_urls: {

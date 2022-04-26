@@ -1,11 +1,43 @@
 .music-page-wrapper {
-  width: 80%;
-  padding-top: 8rem;
-  height: 100vh;
+  width: 100%;
+  max-width: 1240px;
+  padding: 8rem 20px 11rem 20px;
 }
 .playlist-titles {
   display: flex;
   & > div {
     margin-right: 1rem;
   }
+}
+
+.palylist-item-wrapper {
+  margin: 3rem auto 0;
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 40px 50px;
+
+  height: 100%;
+  overflow: auto;
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.palylist-item-wrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.alert-box {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+  font-weight: 600;
+}
+
+.bottom-embedded {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
 }
