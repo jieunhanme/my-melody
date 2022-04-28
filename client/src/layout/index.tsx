@@ -3,6 +3,7 @@ import axios from "axios";
 import { Routes, Route } from "react-router-dom";
 
 import { ThemeProvider } from "../contexts";
+import { setCookie, getCookie, removeCookie } from "../utils";
 
 import ThemeSwitch from "../components/molecules/theme-switch";
 import Header from "../components/organism/header";
@@ -16,9 +17,13 @@ import "./style.scss";
 const code = new URLSearchParams(window.location.search).get("code");
 
 const Layout = () => {
-  const [accessToken, setAccessToken] = useState<string | null>();
-  const [refreshToken, setRefreshToken] = useState<string | null>();
-  const [expiresIn, setExpiresIn] = useState<number | null>();
+  const accessToken = getCookie("access_token");
+  const refreshToken = getCookie("refresh_token");
+  const expiresIn = getCookie("expires_in");
+
+  const [isLogined, changeIsLogined] = useState<boolean>(
+    accessToken ? true : false
+  );
 
   useEffect(() => {
     if (!code) return;
@@ -40,13 +45,10 @@ const Layout = () => {
         }
       )
       .then(({ data }) => {
-        setAccessToken(data.access_token);
-        setRefreshToken(data.refresh_token);
-        setExpiresIn(data.expires_in);
-
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${data.access_token}`;
+        setCookie("access_token", data.access_token, { path: "/" });
+        setCookie("refresh_token", data.refresh_token, { path: "/" });
+        setCookie("expires_in", data.expires_in, { path: "/" });
+        changeIsLogined(true);
 
         window.history.pushState({}, "", "/");
       })
@@ -75,34 +77,29 @@ const Layout = () => {
           }
         )
         .then(({ data }) => {
-          setAccessToken(data.access_token);
-          setExpiresIn(data.expires_in);
-
-          axios.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${data.access_token}`;
+          setCookie("access_token", data.access_token, { path: "/" });
+          setCookie("expires_in", data.expires_in, { path: "/" });
 
           window.history.pushState({}, "", "/");
         })
         .catch(() => (window.location.href = "/"));
-    }, (expiresIn - 60) * 1000);
+    }, 1000);
 
     return () => clearTimeout(timeout);
   }, [expiresIn, refreshToken]);
 
   const onClickLogout = useCallback(() => {
-    setAccessToken(null);
-    setRefreshToken(null);
-    setExpiresIn(null);
-    // NOTE 토큰 값 제거
-    delete axios.defaults.headers.common["Authorization"];
+    removeCookie("access_token");
+    removeCookie("refresh_token");
+    removeCookie("expires_in");
+    changeIsLogined(false);
   }, []);
 
   return (
     <ThemeProvider>
       <ThemeSwitch />
       <Header
-        isLogin={accessToken ? true : false}
+        isLogin={isLogined ? true : false}
         onClickLogout={onClickLogout}
       />
       <div className="myClass">

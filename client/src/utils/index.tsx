@@ -1,3 +1,2 @@
-import { imgPath } from "./make-image-path";
-
-export { imgPath };
+export * from "./make-image-path";
+export * from "./cookies";
