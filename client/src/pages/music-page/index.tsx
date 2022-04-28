@@ -6,18 +6,22 @@ import { getPlaylist, getPlaylistItems } from "../../api";
 
 import { ButtonText } from "../../components/atoms/buttons";
 import ItemBox from "../../components/molecules/item-box";
+import { getCookie } from "../../utils";
 
 import "./style.scss";
 
 const MusicPage = () => {
+  const { isLoading, isError, data } = useQuery(["playlist"], getPlaylist());
+
   const [selectedCategoryId, changeSelectedCategoryId] = useState<
     string | null
-  >(null);
+  >(data?.items[0].id || null);
+
   const [selectedItem, changeSelectedItem] = useState<Array<number> | null>(
     null
   );
 
-  const { isLoading, isError, data } = useQuery(["playlist"], getPlaylist());
+  console.log("🚀 ~ file: index.tsx ~ line 22 ~ MusicPage ~ data", data);
 
   const {
     isLoading: isItemsLoading,
@@ -99,7 +103,7 @@ const MusicPage = () => {
         <div className="bottom-embedded">
           <SpotifyPlayer
             autoPlay={true}
-            token="BQAzGkr8n21--BI7y_8MZwp4bkXIcOlxGrIhTjzC_AIZv5sMdgOBd6K6b468vDmdIkvox1ecL9vYeS4KoJjq_7DtdV66-0ll7yKSw4TkKrLoTHwmhSHfKa0CsyZaxb8fmWGLV7g39SsZtwafVuZx_x7ncfJxxLpdrAq1csWX0ym2XCLNCzZIUP4VUk1AOGWMLRyb51YscaH5D3 -yPcyPBtDX"
+            token={getCookie("access_token")}
             uris={[data.items[0].uri]}
           />
         </div>
